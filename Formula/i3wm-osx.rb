@@ -2,12 +2,12 @@ class I3wmOsx < Formula
   desc "Tiling window manager for macOS that reads i3 config files"
   homepage "https://github.com/grepsedawk/i3wm-osx"
   url "https://github.com/grepsedawk/i3wm-osx/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "1547031ef2a99d3ddaea4821d5511d8be46d275a5ca10e7b1e8cd13a691a46a0"
+  sha256 "18e245c172f6594e0a87ac551c149a1bf7f7da8b05d3cd96d9f4c3848c3ef6dc"
   license "MIT"
   head "https://github.com/grepsedawk/i3wm-osx.git", branch: "main"
 
-  depends_on xcode: ["14.0", :build]
   depends_on macos: :ventura
+  uses_from_macos "swift" => :build
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release"
