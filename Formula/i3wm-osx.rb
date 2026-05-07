@@ -6,8 +6,8 @@ class I3wmOsx < Formula
   license "MIT"
   head "https://github.com/grepsedawk/i3wm-osx.git", branch: "main"
 
-  depends_on macos: :ventura
   depends_on xcode: ["14.0", :build]
+  depends_on macos: :ventura
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release"
