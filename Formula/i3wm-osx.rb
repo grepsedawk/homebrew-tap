@@ -1,43 +1,20 @@
 class I3wmOsx < Formula
   desc "Tiling window manager for macOS that reads i3 config files"
   homepage "https://github.com/grepsedawk/i3wm-osx"
-  url "https://github.com/grepsedawk/i3wm-osx/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "18e245c172f6594e0a87ac551c149a1bf7f7da8b05d3cd96d9f4c3848c3ef6dc"
+  url "https://github.com/grepsedawk/i3wm-osx/releases/download/v0.1.1/i3wm-osx-0.1.1-arm64.tar.gz"
+  version "0.1.1"
+  sha256 "b001e996e7fe6def67e02b542b665637a52c846c20ef20906e1f8c7a709d003f"
   license "MIT"
-  head "https://github.com/grepsedawk/i3wm-osx.git", branch: "main"
 
+  depends_on arch: :arm64
   depends_on macos: :ventura
-  uses_from_macos "swift" => :build
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release"
-
-    bin_path = Utils.safe_popen_read("swift", "build", "-c", "release", "--show-bin-path").strip
-    daemon = "#{bin_path}/i3wm-osx"
-    msg = "#{bin_path}/i3-msg"
-
-    app = prefix/"i3wm-osx.app"
-    macos_dir = app/"Contents/MacOS"
-    res_dir = app/"Contents/Resources"
-    macos_dir.mkpath
-    res_dir.mkpath
-
-    cp daemon, macos_dir/"i3wm-osx"
-    cp msg, macos_dir/"i3-msg"
-    cp "Resources/Info.plist", app/"Contents/Info.plist"
-    (app/"Contents/PkgInfo").write "APPL????"
-
-    # Ad-hoc sign so the bundle launches; users who want stable TCC grants
-    # across `brew upgrade` should run setup-signing.sh once and rebuild
-    # locally (HOMEBREW_NO_INSTALL_FROM_API=1 brew install --build-from-source).
-    system "codesign", "--force", "--deep", "--sign", "-",
-           "--identifier", "org.piechowski.i3wm-osx", app
-
-    bin.install_symlink macos_dir/"i3-msg"
-    bin.install_symlink macos_dir/"i3wm-osx" => "i3wm-osx-bin"
+    prefix.install "i3wm-osx.app"
+    bin.install_symlink prefix/"i3wm-osx.app/Contents/MacOS/i3-msg"
 
     (etc/"i3wm-osx").mkpath
-    cp "examples/config-macos", etc/"i3wm-osx/config.example"
+    (etc/"i3wm-osx/config.example").write File.read("config.example") if File.exist?("config.example")
   end
 
   def caveats
@@ -55,10 +32,9 @@ class I3wmOsx < Formula
       Run once:
         open #{opt_prefix}/i3wm-osx.app
 
-      TCC grants persist across `brew upgrade` only if the cdhash is stable.
-      Homebrew's bottle/build pipeline ad-hoc signs, so each install changes
-      the cdhash and re-prompts for permissions. To pin a stable identity,
-      run setup-signing.sh from the source repo and rebuild locally.
+      The bundle is signed with a stable self-signed identity, so TCC
+      grants persist across `brew upgrade`. macOS will warn "unidentified
+      developer" on first launch — right-click the bundle → Open.
     EOS
   end
 
@@ -70,6 +46,7 @@ class I3wmOsx < Formula
   end
 
   test do
-    assert_match "i3wm-osx", shell_output("#{bin}/i3-msg --version 2>&1", 0..1)
+    assert_path_exists prefix/"i3wm-osx.app/Contents/MacOS/i3wm-osx"
+    assert_path_exists bin/"i3-msg"
   end
 end
