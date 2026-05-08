@@ -3,7 +3,7 @@ class I3wmOsx < Formula
   homepage "https://github.com/grepsedawk/i3wm-osx"
   url "https://github.com/grepsedawk/i3wm-osx/releases/download/v0.1.1/i3wm-osx-0.1.1-arm64.tar.gz"
   version "0.1.1"
-  sha256 "7df63b2693e0f389954c82760f8fadc3811cd49238af8b3510753432db4d91e2"
+  sha256 "7080e98a16d98370c7336d2d0fc6548f976718c3e6d4449a7806a7d2f7b64ed5"
   license "MIT"
 
   depends_on arch: :arm64
