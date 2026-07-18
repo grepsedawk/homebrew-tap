@@ -1,9 +1,9 @@
 class I3wmOsx < Formula
   desc "Tiling window manager for macOS that reads i3 config files"
   homepage "https://github.com/grepsedawk/i3wm-osx"
-  url "https://github.com/grepsedawk/i3wm-osx/releases/download/v0.3.0/i3wm-osx-0.3.0-arm64.tar.gz"
-  version "0.3.0"
-  sha256 "c167203b765eb0f2689f4144f0a250a471a3372d7a3d56c61016ba82736e72dc"
+  url "https://github.com/grepsedawk/i3wm-osx/releases/download/v0.3.1/i3wm-osx-0.3.1-arm64.tar.gz"
+  version "0.3.1"
+  sha256 "1e956b64fd96706b7b84e6ba76eea138522d686e2b0b27e95bce43f540689356"
   license "MIT"
 
   depends_on arch: :arm64
