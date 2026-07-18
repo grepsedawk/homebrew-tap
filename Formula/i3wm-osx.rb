@@ -5,6 +5,7 @@ class I3wmOsx < Formula
   version "0.3.1"
   sha256 "1e956b64fd96706b7b84e6ba76eea138522d686e2b0b27e95bce43f540689356"
   license "MIT"
+  revision 1
 
   depends_on arch: :arm64
   depends_on macos: :ventura
@@ -13,8 +14,7 @@ class I3wmOsx < Formula
     prefix.install "i3wm-osx.app"
     bin.install_symlink prefix/"i3wm-osx.app/Contents/MacOS/i3-msg"
 
-    (etc/"i3wm-osx").mkpath
-    (etc/"i3wm-osx/config.example").write File.read("config.example") if File.exist?("config.example")
+    (etc/"i3wm-osx").install "config.example"
   end
 
   def caveats
